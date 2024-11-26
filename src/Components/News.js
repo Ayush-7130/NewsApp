@@ -5,10 +5,10 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 const News = (props) => {
     const [article, setarticle] = useState([]);
-    const [loading, setloading] = useState('fasle');
+    const [loading, setloading] = useState('false');
     const [totalResults, settotalResults] = useState(0);
     const [page, setpage] = useState(1);
-    
+
     const capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
@@ -16,7 +16,7 @@ const News = (props) => {
     const updateNews = async () => {
         props.setprogress(10)
         setloading({ loading: true })
-        let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=6194642078a64f84ab02afa28b078c14&page=${page + 1}&pageSize=${props.pageSize}`;
+        let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.API_KEY}&page=${page}&pageSize=${props.pageSize}`;
         props.setprogress(30)
         let data = await fetch(url);
         let parseData = await data.json()
@@ -26,27 +26,27 @@ const News = (props) => {
         setloading(false)
         props.setprogress(100)
     }
-    
+
     useEffect(() => {
         props.setprogress(0)
         document.title = `${capitalizeFirstLetter(props.category)} - NewsApp`
         updateNews()
     }, [])
-    
+
     // const HandlePrevClick = async () => {
-        //     setpage(page-1)
-        //     updateNews()
-        // }
-        
+    //     setpage(page-1)
+    //     updateNews()
+    // }
+
     // const HandleNextClick = async () => {
-        //     setpage(page+1)
-        //     updateNews()
-        // }
-        
+    //     setpage(page+1)
+    //     updateNews()
+    // }
+
     const fetchMoreData = async () => {
         setpage(page + 1)
         setloading(true)
-        let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=6194642078a64f84ab02afa28b078c14&page=${page + 1}&pageSize=${props.pageSize}`;
+        let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.API_KEY}&page=${page + 1}&pageSize=${props.pageSize}`;
         let data = await fetch(url);
         let parseData = await data.json()
         setarticle(article.concat(parseData.articles))
